@@ -15,7 +15,14 @@ const config: GatsbyConfig = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `messages`,
-        path: `${__dirname}/content/messages/`, // ✅ this must match your folder
+        path: `${__dirname}/content/messages/`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/content/messages/`, // or the folder where your images are
       },
     },
   ],

@@ -9,7 +9,6 @@ export const wrapPageElement = ({ element, props }) => {
     if (!role && !isLogin) {
       console.log("Redirecting to /login from", props.location.pathname)
       navigate("/login")
-      return null
     }
 
     if (isLogin) {

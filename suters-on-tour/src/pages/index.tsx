@@ -8,6 +8,7 @@ type Message = {
     title: string
     week: number
     date: string
+    opened: boolean
   }
 }
 
@@ -48,10 +49,12 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
           const { title, week, date } = frontmatter
           const unlockDate = new Date(date)
           const canOpen = now >= unlockDate
-          const isOpen = isDoorOpen(week)
-          const unlocked = role === "mnms" && canOpen
+          const isUnlocked = frontmatter.opened
+          const canBeUnlocked = role === "mnms" && now >= unlockDate
 
-          const visible = isOpen || unlocked
+          const visible = isUnlocked || canBeUnlocked
+
+
 
           return (
             <div
@@ -93,10 +96,12 @@ export const query = graphql`
           title
           week
           date
+          opened # ✅ add this
         }
       }
     }
   }
 `
+
 
 export default IndexPage

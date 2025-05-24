@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { graphql, PageProps } from "gatsby"
 import { GatsbyImage, getImage, IGatsbyImageData } from "gatsby-plugin-image"
 import { getUserRole, isDoorOpen, openDoor } from "../utils/auth"
@@ -8,9 +8,14 @@ type MessageData = {
     html: string
     frontmatter: {
       title: string
-      image?: string
+      image?: {
+        childImageSharp?: {
+          gatsbyImageData: IGatsbyImageData
+        }
+      }
       week: number
       date: string
+      opened?: boolean
     }
   }
   allFile: {
@@ -25,32 +30,34 @@ type MessageData = {
 
 const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
   const { html, frontmatter } = data.markdownRemark
-  const { title, image: imageName, week, date } = frontmatter
+  const { title, image: imageName, week, date, opened } = frontmatter
   const role = getUserRole()
-  const unlockDate = new Date(date)
   const now = new Date()
+  const unlockDate = new Date(date)
 
-  const isOpen = isDoorOpen(week)
+  const isOpen = frontmatter.opened || (role === "mnms" && now >= unlockDate)
 
-  if (role === "mnms" && !isOpen && now >= unlockDate) {
-    openDoor(week)
-  }
+
+  useEffect(() => {
+    if (role === "mnms" && !isOpen && now >= unlockDate) {
+      openDoor(week)
+    }
+  }, [role, isOpen, unlockDate, now, week])
 
   if (role === "friend" && !isOpen) {
     return (
       <main style={{ padding: "2rem", textAlign: "center" }}>
-        <h1>⛔ This door hasn’t been opened yet!</h1>
-        <p>Wait until the M&Ms unlock it 🎁</p>
+        <h1>🔒 This door hasn’t been opened yet!</h1>
+        <p>Only M&Ms can open it after {date}</p>
       </main>
     )
   }
 
-  const imageNode = data.allFile.nodes.find((node) =>
-    node.relativePath.includes(imageName || "")
-  )
-  const image = imageNode?.childImageSharp
-    ? getImage(imageNode.childImageSharp)
-    : null
+const imageData = frontmatter.image?.childImageSharp?.gatsbyImageData
+const image = imageData ? getImage(imageData) : null
+
+{image && <GatsbyImage image={image} alt={title} />}
+
 
   return (
     <main style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
@@ -69,18 +76,15 @@ export const query = graphql`
         title
         week
         date
-        image
-      }
-    }
-    allFile(filter: { sourceInstanceName: { eq: "messages" } }) {
-      nodes {
-        relativePath
-        childImageSharp {
-          gatsbyImageData(width: 600)
+        image {
+          childImageSharp {
+            gatsbyImageData(width: 600)
+          }
         }
       }
     }
   }
 `
+
 
 export default MessageTemplate
