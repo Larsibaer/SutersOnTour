@@ -1,7 +1,9 @@
 import React from "react"
 import { navigate } from "gatsby"
 
-export const wrapPageElement = ({ element, props }) => {
+import { WrapPageElementBrowserArgs } from "gatsby"
+
+export const wrapPageElement = ({ element, props }: WrapPageElementBrowserArgs) => {
   if (typeof window !== "undefined") {
     const isLogin = props.location.pathname === "/login"
     const role = localStorage.getItem("role")
