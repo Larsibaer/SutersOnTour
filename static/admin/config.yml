@@ -1,0 +1,20 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "static/images"
+public_folder: "/images"
+
+collections:
+  - name: "doors"
+    label: "Doors"
+    folder: "content/messages"
+    create: false
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Week", name: "week", widget: "number" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Opened", name: "opened", widget: "boolean" }
+      - { label: "Image", name: "image", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
