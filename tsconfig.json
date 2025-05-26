@@ -7,13 +7,13 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "jsx": "react-jsx",              // ✅ Needed for React files
+    "jsx": "react-jsx",
     "types": ["node"]
   },
   "include": [
-    "src",                           // ✅ for Gatsby pages/components
-    "gatsby-*.ts",                   // ✅ for config files
-    "scripts"                        // ✅ for your CLI utilities
+    "src",
+    "gatsby-*.ts",
+    "scripts"
   ],
   "exclude": [
     "node_modules",
