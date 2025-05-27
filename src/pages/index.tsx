@@ -71,7 +71,7 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
   <div
     onClick={async () => {
       try {
-        await fetch("/.scripts/openDoor", {
+        await fetch("/.netlify/functions/openDoor", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ week }),
