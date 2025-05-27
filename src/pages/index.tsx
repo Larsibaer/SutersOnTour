@@ -1,8 +1,9 @@
 import React from "react"
 import { graphql, PageProps, navigate } from "gatsby"
-import { getUserRole, logout } from "../utils/auth"
+import { getUserRole, getUser } from "../utils/auth"
 import { Link } from "gatsby"
 import LoginMenu from "../../components/loginMenu"
+import PrivateRoute from "../../components/privateRoute"
 
 type Message = {
   fields: { slug: string }
@@ -26,20 +27,10 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
   const now = new Date()
 
   return (
+    <PrivateRoute>
     <main style={{ padding: "2rem" }}>
       <LoginMenu />
       <h1>Suters On Tour: Doors</h1>
-
-      <button
-        onClick={() => {
-          logout()
-          window.location.reload()
-        }}
-        style={{ position: "fixed", top: 10, right: 10 }}
-      >
-        Logout
-      </button>
-
       <div
         style={{
           display: "grid",
@@ -53,7 +44,12 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
           const unlockDate = new Date(date)
           const isEditor = role === "editor"
           const canOpen = isEditor && !opened && now >= unlockDate
-          const visible = opened || canOpen || role === "admin"
+          let visible: boolean
+          if (role === "admin") {
+            visible = true
+          } else {
+            visible = opened || canOpen
+          }
 
           return (
             <div
@@ -77,7 +73,7 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
                       })
                       navigate(slug)
                     } catch {
-                      alert("❌ Failed to open door")
+                      alert("Failed to open door")
                     }
                   }}
                   style={{
@@ -93,6 +89,7 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
                   <h3>{title}</h3>
                 </Link>
               ) : (
+                console.log("visible:", visible, "role:", role, "user:", getUser()),
                 <>
                   <h3>{title}</h3>
                   <p>🔒 Locked</p>
@@ -102,7 +99,7 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
           )
         })}
       </div>
-    </main>
+    </main></PrivateRoute>
   )
 }
 
