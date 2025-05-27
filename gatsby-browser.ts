@@ -1,5 +1,5 @@
-import { initIdentity } from "./src/utils/auth"
+import { initIdentityWithRedirect } from "./src/utils/auth"
 
 export const onInitialClientRender = () => {
-  initIdentity()
+  initIdentityWithRedirect()
 }

@@ -41,3 +41,11 @@ export function openLogin(callback?: () => void) {
     })
   }
 }
+
+export function initIdentityWithRedirect() {
+  netlifyIdentity.init()
+
+  netlifyIdentity.on("login", () => {
+    window.location.href = "/" // ✅ Redirect to index page
+  })
+}

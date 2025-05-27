@@ -3,6 +3,7 @@ import { graphql, PageProps } from "gatsby"
 import { GatsbyImage, getImage, IGatsbyImageData } from "gatsby-plugin-image"
 import { getUserRole } from "../utils/auth"
 import LoginMenu from "../../components/loginMenu"
+import PrivateRoute from "../../components/privateRoute"
 
 type MessageData = {
   markdownRemark: {
@@ -64,12 +65,13 @@ const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
   const gatsbyImage = imageData ? getImage(imageData) : null
 
   return (
+    <PrivateRoute>
     <main style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
       <LoginMenu />
       <h1>{title}</h1>
       {gatsbyImage && <GatsbyImage image={gatsbyImage} alt={title} />}
       <div dangerouslySetInnerHTML={{ __html: html }} />
-    </main>
+    </main></PrivateRoute>
   )
 }
 
