@@ -1,5 +1,5 @@
 ---
-opened: false
+opened: true
 week: 1
 title: Week 1
 date: '2025-05-01'
