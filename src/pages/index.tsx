@@ -67,16 +67,30 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
                 opacity: visible ? 1 : 0.5,
               }}
             >
-              {visible ? (
-                <Link to={slug} style={{ textDecoration: "none" }}>
-                  <h3>{title}</h3>
-                </Link>
-              ) : (
-                <>
-                  <h3>{title}</h3>
-                  <p>🔒 Locked</p>
-                </>
-              )}
+              {role === "mnms" ? (
+  <div
+    onClick={async () => {
+      try {
+        await fetch("/.scripts/openDoor", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ week }),
+        })
+        // Redirect immediately to the door
+        window.location.href = slug
+      } catch {
+        alert("❌ Failed to open door")
+      }
+    }}
+    style={{ cursor: "pointer", textDecoration: "underline", color: "blue" }}
+  >
+    <h3>{title}</h3>
+  </div>
+) : (
+  <Link to={slug} style={{ textDecoration: "none" }}>
+    <h3>{title}</h3>
+  </Link>
+)}
             </div>
           )
         })}
