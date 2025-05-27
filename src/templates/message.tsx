@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import { graphql, PageProps } from "gatsby"
 import { GatsbyImage, getImage, IGatsbyImageData } from "gatsby-plugin-image"
 import { useAuth } from "../hooks/useAuth"
-import LoginMenu from "../components/LoginMenu"
-import PrivateRoute from "../components/PrivateRoute"
+import LoginMenu from "../components/loginMenu"
+import PrivateRoute from "../components/privateRoute"
 
 type MessageData = {
   markdownRemark: {

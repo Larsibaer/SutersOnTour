@@ -1,8 +1,8 @@
 import React from "react"
 import { graphql, PageProps, navigate, Link } from "gatsby"
 import { useAuth } from "../hooks/useAuth"
-import LoginMenu from "../components/LoginMenu"
-import PrivateRoute from "../components/PrivateRoute"
+import LoginMenu from "../components/loginMenu"
+import PrivateRoute from "../components/privateRoute"
 
 type Message = {
   fields: { slug: string }
