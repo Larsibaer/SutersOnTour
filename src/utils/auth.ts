@@ -24,9 +24,11 @@ export function getUserRole(): UserRole {
   return (roles[0] as UserRole) || "anonymous"
 }
 
-// ✅ Call to log out the user
 export function logout() {
   netlifyIdentity.logout()
+  netlifyIdentity.on("logout", () => {
+    window.location.reload() // ✅ Fully refresh widget state
+  })
 }
 
 // ✅ Opens the Netlify Identity login UI
