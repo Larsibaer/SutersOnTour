@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { graphql, PageProps } from "gatsby"
 import { GatsbyImage, getImage, IGatsbyImageData } from "gatsby-plugin-image"
-import { getUserRole, isDoorOpen, openDoor } from "../utils/auth"
+import { getUserRole } from "../utils/auth"
+import LoginMenu from "../../components/loginMenu"
 
 type MessageData = {
   markdownRemark: {
@@ -18,33 +19,39 @@ type MessageData = {
       opened?: boolean
     }
   }
-  allFile: {
-    nodes: {
-      relativePath: string
-      childImageSharp?: {
-        gatsbyImageData: IGatsbyImageData
-      }
-    }[]
-  }
 }
 
 const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
   const { html, frontmatter } = data.markdownRemark
-  const { title, image: imageName, week, date, opened } = frontmatter
+  const { title, image, week, date, opened } = frontmatter
+
   const role = getUserRole()
   const now = new Date()
   const unlockDate = new Date(date)
 
-  const isOpen = frontmatter.opened || (role === "mnms" && now >= unlockDate)
+  const [isOpen, setIsOpen] = useState(opened ?? false)
 
-
+  // Automatically open if editor and allowed
   useEffect(() => {
-    if (role === "mnms" && !isOpen && now >= unlockDate) {
-      openDoor(week)
+    if (role === "editor" && !opened && now >= unlockDate) {
+      fetch("/.netlify/functions/openDoor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ week }),
+      })
+        .then((res) => {
+          if (res.ok) setIsOpen(true)
+        })
+        .catch(() => {
+          console.error("Failed to open door")
+        })
+    } else if (opened) {
+      setIsOpen(true)
     }
-  }, [role, isOpen, unlockDate, now, week])
+  }, [role, opened, unlockDate, now, week])
 
-  if (role === "friend" && !isOpen) {
+  // Block viewer access if locked
+  if (role === "viewer" && !isOpen) {
     return (
       <main style={{ padding: "2rem", textAlign: "center" }}>
         <h1>🔒 This door hasn’t been opened yet!</h1>
@@ -53,16 +60,14 @@ const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
     )
   }
 
-const imageData = frontmatter.image?.childImageSharp?.gatsbyImageData
-const image = imageData ? getImage(imageData) : null
-
-{image && <GatsbyImage image={image} alt={title} />}
-
+  const imageData = image?.childImageSharp?.gatsbyImageData
+  const gatsbyImage = imageData ? getImage(imageData) : null
 
   return (
     <main style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
+      <LoginMenu />
       <h1>{title}</h1>
-      {image && <GatsbyImage image={image} alt={title} />}
+      {gatsbyImage && <GatsbyImage image={gatsbyImage} alt={title} />}
       <div dangerouslySetInnerHTML={{ __html: html }} />
     </main>
   )
@@ -76,6 +81,7 @@ export const query = graphql`
         title
         week
         date
+        opened
         image {
           childImageSharp {
             gatsbyImageData(width: 600)
@@ -85,6 +91,5 @@ export const query = graphql`
     }
   }
 `
-
 
 export default MessageTemplate

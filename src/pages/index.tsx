@@ -1,6 +1,8 @@
 import React from "react"
-import { graphql, PageProps, Link } from "gatsby"
-import { getUserRole, isDoorOpen } from "../utils/auth"
+import { graphql, PageProps, navigate } from "gatsby"
+import { getUserRole, logout } from "../utils/auth"
+import { Link } from "gatsby"
+import LoginMenu from "../../components/loginMenu"
 
 type Message = {
   fields: { slug: string }
@@ -25,17 +27,18 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
 
   return (
     <main style={{ padding: "2rem" }}>
+      <LoginMenu />
       <h1>Suters On Tour: Doors</h1>
+
       <button
-  onClick={() => {
-    localStorage.removeItem("role")
-    localStorage.removeItem("openedDoors")
-    window.location.href = "/login"
-  }}
-  style={{ position: "fixed", top: 10, right: 10 }}
->
-  Logout
-</button>
+        onClick={() => {
+          logout()
+          window.location.reload()
+        }}
+        style={{ position: "fixed", top: 10, right: 10 }}
+      >
+        Logout
+      </button>
 
       <div
         style={{
@@ -46,15 +49,11 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
       >
         {messages.map(({ fields, frontmatter }) => {
           const { slug } = fields
-          const { title, week, date } = frontmatter
+          const { title, week, date, opened } = frontmatter
           const unlockDate = new Date(date)
-          const canOpen = now >= unlockDate
-          const isUnlocked = frontmatter.opened
-          const canBeUnlocked = role === "mnms" && now >= unlockDate
-
-          const visible = isUnlocked || canBeUnlocked
-
-
+          const isEditor = role === "editor"
+          const canOpen = isEditor && !opened && now >= unlockDate
+          const visible = opened || canOpen || role === "admin"
 
           return (
             <div
@@ -67,30 +66,38 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
                 opacity: visible ? 1 : 0.5,
               }}
             >
-              {role === "mnms" ? (
-  <div
-    onClick={async () => {
-      try {
-        await fetch("/.netlify/functions/openDoor", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ week }),
-        })
-        // Redirect immediately to the door
-        window.location.href = slug
-      } catch {
-        alert("❌ Failed to open door")
-      }
-    }}
-    style={{ cursor: "pointer", textDecoration: "underline", color: "blue" }}
-  >
-    <h3>{title}</h3>
-  </div>
-) : (
-  <Link to={slug} style={{ textDecoration: "none" }}>
-    <h3>{title}</h3>
-  </Link>
-)}
+              {canOpen ? (
+                <div
+                  onClick={async () => {
+                    try {
+                      await fetch("/.netlify/functions/openDoor", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ week }),
+                      })
+                      navigate(slug)
+                    } catch {
+                      alert("❌ Failed to open door")
+                    }
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                    color: "blue",
+                  }}
+                >
+                  <h3>{title}</h3>
+                </div>
+              ) : visible ? (
+                <Link to={slug} style={{ textDecoration: "none" }}>
+                  <h3>{title}</h3>
+                </Link>
+              ) : (
+                <>
+                  <h3>{title}</h3>
+                  <p>🔒 Locked</p>
+                </>
+              )}
             </div>
           )
         })}
@@ -110,12 +117,11 @@ export const query = graphql`
           title
           week
           date
-          opened # ✅ add this
+          opened
         }
       }
     }
   }
 `
-
 
 export default IndexPage
