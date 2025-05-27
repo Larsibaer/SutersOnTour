@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react"
-import { getUser } from "../src/utils/auth.ts"
+import React from "react"
+import { useAuth } from "../hooks/useAuth"
 import netlifyIdentity from "netlify-identity-widget"
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [checked, setChecked] = useState(false)
+  const { user, loading } = useAuth()
 
-  useEffect(() => {
-    netlifyIdentity.init()
-    const user = getUser()
-    if (user) setIsAuthenticated(true)
-    setChecked(true)
-  }, [])
+  if (loading) return null
 
-  if (!checked) return null
-
-  if (!isAuthenticated) {
+  if (!user) {
     return (
       <main style={{ padding: "2rem", textAlign: "center" }}>
         <h1>🔐 Login Required</h1>
