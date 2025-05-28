@@ -7,10 +7,17 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const [bypass, setBypass] = useState(false)
 
   useEffect(() => {
+    netlifyIdentity.init()
+
+    // 👇 Check if we're on an invite or recovery flow
     const hash = window?.location?.hash
-    if (hash.includes("recovery_token") || hash.includes("invite_token")) {
-      netlifyIdentity.open() // opens modal
-      setBypass(true)        // wait, don't show login required
+    if (
+      hash?.includes("recovery_token") ||
+      hash?.includes("confirmation_token") ||
+      hash?.includes("invite_token")
+    ) {
+      netlifyIdentity.open() // Show widget for password setting
+      setBypass(true)
     }
   }, [])
 
