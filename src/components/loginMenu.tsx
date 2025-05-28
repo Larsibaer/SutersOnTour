@@ -3,7 +3,7 @@ import netlifyIdentity from "netlify-identity-widget"
 import { useAuth } from "../hooks/useAuth"
 
 const LoginMenu: React.FC = () => {
-  const { user, role, loading } = useAuth()
+  const { user, loading } = useAuth()
 
   if (loading) return null
 
@@ -21,7 +21,7 @@ const LoginMenu: React.FC = () => {
   return (
     <div style={{ position: "fixed", top: 10, right: 10, textAlign: "right" }}>
       <div style={{ fontSize: "0.8rem" }}>
-        👤 {user.email} ({role})
+        👤 {user.email}
       </div>
       <button
         onClick={() => {

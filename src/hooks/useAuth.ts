@@ -2,53 +2,36 @@ import { useEffect, useState } from "react"
 import netlifyIdentity from "netlify-identity-widget"
 import { navigate } from "gatsby"
 
-type UserRole = "admin" | "editor" | "viewer" | "anonymous"
-
-export const useAuth = () => {
+export function useAuth() {
   const [user, setUser] = useState<netlifyIdentity.User | null>(null)
-  const [role, setRole] = useState<UserRole>("anonymous")
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     netlifyIdentity.init()
 
     const current = netlifyIdentity.currentUser()
-    if (current) {
-      setUser(current)
-      setRole((current.app_metadata?.roles?.[0] as UserRole) || "anonymous")
+    if (current) setUser(current)
+    setLoading(false)
+
+    const onLogin = (user: netlifyIdentity.User) => {
+      setUser(user)
+      setLoading(false)
+      navigate("/") 
+    }
+
+    const onLogout = () => {
+      setUser(null)
       setLoading(false)
     }
 
-    netlifyIdentity.on("init", (user) => {
-      setUser(user)
-      setRole((user?.app_metadata?.roles?.[0] as UserRole) || "anonymous")
-      setLoading(false)
-    })
-
-    netlifyIdentity.on("login", (user) => {
-      setUser(user)
-      setRole((user?.app_metadata?.roles?.[0] as UserRole) || "anonymous")
-      setLoading(false)
-      navigate("/")
-    })
-
-    netlifyIdentity.on("signup", () => {
-      navigate("/")
-    })
-
-    netlifyIdentity.on("logout", () => {
-      setUser(null)
-      setRole("anonymous")
-      setLoading(false)
-    })
+    netlifyIdentity.on("login", onLogin)
+    netlifyIdentity.on("logout", onLogout)
 
     return () => {
-      netlifyIdentity.off("init")
-      netlifyIdentity.off("login")
-      netlifyIdentity.off("signup")
-      netlifyIdentity.off("logout")
+      netlifyIdentity.off("login", onLogin)
+      netlifyIdentity.off("logout", onLogout)
     }
   }, [])
 
-  return { user, role, loading }
+  return { user, loading }
 }
