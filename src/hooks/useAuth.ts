@@ -33,7 +33,7 @@ export const useAuth = () => {
     })
 
     netlifyIdentity.on("signup", () => {
-      navigate("/")
+      window.location.href = "/"
     })
 
     netlifyIdentity.on("logout", () => {
