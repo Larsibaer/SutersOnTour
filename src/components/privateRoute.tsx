@@ -1,11 +1,18 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import netlifyIdentity from "netlify-identity-widget"
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth()
+  const [allowNetlify, setAllowNetlify] = useState(false)
 
-  if (loading) return null
+  useEffect(() => {
+    const hash = window?.location?.hash
+    if (hash && (hash.includes("recovery_token") || hash.includes("invite_token"))) {
+      netlifyIdentity.open()
+      setAllowNetlify(true)
+    }
+  }, [])
 
   if (!user) {
     return (

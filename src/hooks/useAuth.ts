@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import netlifyIdentity from "netlify-identity-widget"
+import { navigate } from "gatsby"
 
 type UserRole = "admin" | "editor" | "viewer" | "anonymous"
 
@@ -28,11 +29,11 @@ export const useAuth = () => {
       setUser(user)
       setRole((user?.app_metadata?.roles?.[0] as UserRole) || "anonymous")
       setLoading(false)
-      window.location.href = "/"
+      navigate("/")
     })
 
     netlifyIdentity.on("signup", () => {
-      window.location.href = "/"
+      navigate("/")
     })
 
     netlifyIdentity.on("logout", () => {
