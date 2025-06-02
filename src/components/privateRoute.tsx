@@ -2,26 +2,62 @@ import React, { useEffect, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import netlifyIdentity from "netlify-identity-widget"
 
+declare global {
+  interface Window {
+    netlifyIdentity?: typeof netlifyIdentity;
+  }
+}
+
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth()
   const [bypass, setBypass] = useState(false)
 
-  useEffect(() => {
+useEffect(() => {
+  const loadWidget = () => {
     netlifyIdentity.init()
 
-    // 👇 Check if we're on an invite or recovery flow
     const hash = window?.location?.hash
-    if (
-      hash?.includes("recovery_token") ||
+    if (hash?.includes("invite_token")) {
+      // Redirect invite_token to /admin
+      window.location.replace(`/admin/${hash}`)
+    } else if (
       hash?.includes("confirmation_token") ||
-      hash?.includes("invite_token")
+      hash?.includes("recovery_token")
     ) {
-      netlifyIdentity.open() // Show widget for password setting
+      netlifyIdentity.open()
       setBypass(true)
     }
-  }, [])
+  }
 
-  if (loading || bypass) return null
+  if (window.netlifyIdentity) {
+    loadWidget()
+  } else {
+    const script = document.createElement("script")
+    script.src = "https://identity.netlify.com/v1/netlify-identity-widget.js"
+    script.id = "netlify-identity-widget"
+    script.async = true
+    document.body.appendChild(script)
+    script.onload = loadWidget
+  }
+}, [])
+
+
+  if (loading) {
+  return (
+    <main style={{ padding: "2rem", textAlign: "center" }}>
+      <h1>⏳ Loading...</h1>
+    </main>
+  )
+}
+
+if (bypass) {
+  return (
+    <main style={{ padding: "2rem", textAlign: "center" }}>
+      <h1>🔑 Redirecting...</h1>
+    </main>
+  )
+}
+
 
   if (!user) {
     return (
