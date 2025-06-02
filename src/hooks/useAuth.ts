@@ -29,11 +29,8 @@ export const useAuth = () => {
       setUser(user)
       setRole((user?.app_metadata?.roles?.[0] as UserRole) || "anonymous")
       setLoading(false)
+      netlifyIdentity.close()
       navigate("/")
-    })
-
-    netlifyIdentity.on("signup", () => {
-      window.location.href = "/"
     })
 
     netlifyIdentity.on("logout", () => {
@@ -45,7 +42,6 @@ export const useAuth = () => {
     return () => {
       netlifyIdentity.off("init")
       netlifyIdentity.off("login")
-      netlifyIdentity.off("signup")
       netlifyIdentity.off("logout")
     }
   }, [])
