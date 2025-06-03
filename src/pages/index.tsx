@@ -59,6 +59,8 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
                   key={slug}
                   className={cardClass}
                   onClick={async () => {
+                    console.log(`Opening door for week ${week}`)
+                    console.log(`Slug: ${slug}`)
                     try {
                       await fetch("/.netlify/functions/openDoor", {
                         method: "POST",

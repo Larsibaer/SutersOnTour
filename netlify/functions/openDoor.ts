@@ -25,7 +25,9 @@ const handler: Handler = async (event, context) => {
   const filePath = `content/messages/week-${String(week).padStart(2, "0")}.md`
 
   const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
-
+  console.log(`Opening door for week ${week} in ${owner}/${repo}`)
+  console.log(`File path: ${filePath}`)
+  console.log(`User: ${user.email} (${user.user_id})`)
   try {
     const { data: file } = await octokit.rest.repos.getContent({
       owner,
