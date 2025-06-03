@@ -33,21 +33,21 @@ const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
   const now = new Date()
   const unlockDate = new Date(date)
 
-  useEffect(() => {
-    if (!opened && role === "editor" && now >= unlockDate) {
-      fetch("/.netlify/functions/openDoor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ week }),
-      })
-        .then((res) => {
-          if (res.ok) setIsOpen(true)
-        })
-        .catch(() => console.error("Failed to open door"))
-    } else if (opened) {
-      setIsOpen(true)
-    }
-  }, [role, opened, week, unlockDate, now])
+  // useEffect(() => {
+  //   if (!opened && role === "editor" && now >= unlockDate) {
+  //     fetch("/.netlify/functions/openDoor", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ week }),
+  //     })
+  //       .then((res) => {
+  //         if (res.ok) setIsOpen(true)
+  //       })
+  //       .catch(() => console.error("Failed to open door"))
+  //   } else if (opened) {
+  //     setIsOpen(true)
+  //   }
+  // }, [role, opened, week, unlockDate, now])
 
   if (loading) {
     return (
