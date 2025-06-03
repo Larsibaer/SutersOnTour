@@ -1,3 +1,5 @@
+import "./src/styles/global.css"
+
 export const onClientEntry = () => {
   if (!document.getElementById("netlify-identity-widget")) {
     const script = document.createElement("script")

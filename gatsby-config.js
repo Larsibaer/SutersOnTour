@@ -1,12 +1,16 @@
-import type { GatsbyConfig } from "gatsby"
+const path = require("path");
 
-const config: GatsbyConfig = {
+/**
+ * @type {import('gatsby').GatsbyConfig}
+ */
+module.exports = {
   siteMetadata: {
     title: `SuterOnTour`,
     siteUrl: `https://www.yourdomain.tld`,
   },
   graphqlTypegen: true,
   plugins: [
+    "gatsby-plugin-postcss",
     `gatsby-transformer-remark`,
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
@@ -15,18 +19,16 @@ const config: GatsbyConfig = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `messages`,
-        path: `${__dirname}/content/messages/`,
+        path: path.resolve(__dirname, "content/messages/"),
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/content/messages/`, // or the folder where your images are
+        path: path.resolve(__dirname, "content/messages/"),
       },
     },
     `gatsby-plugin-netlify-cms`,
   ],
-}
-
-export default config
+};

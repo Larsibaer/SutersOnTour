@@ -11,7 +11,7 @@ const LoginMenu: React.FC = () => {
     return (
       <button
         onClick={() => netlifyIdentity.open("login")}
-        style={{ position: "fixed", top: 10, right: 10 }}
+        className="fixed top-4 right-4 px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
       >
         Login
       </button>
@@ -19,15 +19,13 @@ const LoginMenu: React.FC = () => {
   }
 
   return (
-    <div style={{ position: "fixed", top: 10, right: 10, textAlign: "right" }}>
-      <div style={{ fontSize: "0.8rem" }}>
-        👤 {user.email}
+    <div className="fixed top-4 right-4 text-right bg-white shadow-md p-3 rounded border border-gray-200">
+      <div className="text-sm text-gray-700 mb-1">
+        👤 <span className="font-medium">{user.email}</span>
       </div>
       <button
-        onClick={() => {
-          netlifyIdentity.logout()
-        }}
-        style={{ marginTop: "4px" }}
+        onClick={() => netlifyIdentity.logout()}
+        className="mt-1 text-sm text-red-600 hover:underline"
       >
         Logout
       </button>

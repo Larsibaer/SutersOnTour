@@ -28,9 +28,9 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
   if (loading) {
     return (
       <PrivateRoute>
-        <main style={{ padding: "2rem" }}>
+        <main className="p-8 text-center">
           <LoginMenu />
-          <h1>Suters On Tour: Doors</h1>
+          <h1 className="text-2xl font-bold mb-4">Suters On Tour: Doors</h1>
           <p>Loading user...</p>
         </main>
       </PrivateRoute>
@@ -39,17 +39,11 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
 
   return (
     <PrivateRoute>
-      <main style={{ padding: "2rem" }}>
+      <main className="p-8 min-h-screen bg-gray-50">
         <LoginMenu />
-        <h1>Suters On Tour: Doors</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Suters On Tour: Doors</h1>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            gap: "1rem",
-          }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {messages.map(({ fields, frontmatter }) => {
             const { slug } = fields
             const { title, week, date, opened } = frontmatter
@@ -58,17 +52,18 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
             const canOpen = isEditor && !opened && now >= unlockDate
             const visible = role === "admin" || opened || canOpen
 
-            return (
+            const CardBase = ({ children }: { children: React.ReactNode }) => (
               <div
-                key={slug}
-                style={{
-                  padding: "1rem",
-                  background: visible ? "#e0ffe0" : "#ddd",
-                  textAlign: "center",
-                  borderRadius: "8px",
-                  opacity: visible ? 1 : 0.5,
-                }}
+                className={`p-4 rounded-lg shadow transition ${
+                  visible ? "bg-green-100 hover:bg-green-200 cursor-pointer" : "bg-gray-200 opacity-60"
+                } text-center`}
               >
+                {children}
+              </div>
+            )
+
+            return (
+              <CardBase key={slug}>
                 {canOpen ? (
                   <div
                     onClick={async () => {
@@ -83,25 +78,20 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
                         alert("❌ Failed to open door")
                       }
                     }}
-                    style={{
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                      color: "blue",
-                    }}
                   >
-                    <h3>{title}</h3>
+                    <h3 className="text-lg font-semibold text-blue-800 underline">{title}</h3>
                   </div>
                 ) : visible ? (
-                  <Link to={slug} style={{ textDecoration: "none" }}>
-                    <h3>{title}</h3>
+                  <Link to={slug}>
+                    <h3 className="text-lg font-semibold text-gray-800 hover:text-blue-600">{title}</h3>
                   </Link>
                 ) : (
                   <>
-                    <h3>{title}</h3>
-                    <p>🔒 Locked</p>
+                    <h3 className="text-lg font-semibold text-gray-500">{title}</h3>
+                    <p className="text-sm text-gray-600">🔒 Locked</p>
                   </>
                 )}
-              </div>
+              </CardBase>
             )
           })}
         </div>
