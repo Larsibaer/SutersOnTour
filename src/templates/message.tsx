@@ -4,6 +4,7 @@ import { GatsbyImage, getImage, IGatsbyImageData } from "gatsby-plugin-image"
 import { useAuth } from "../hooks/useAuth"
 import LoginMenu from "../components/loginMenu"
 import PrivateRoute from "../components/privateRoute"
+import "../styles/main.scss"
 
 type MessageData = {
   markdownRemark: {
@@ -32,7 +33,6 @@ const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
   const now = new Date()
   const unlockDate = new Date(date)
 
-  // Auto-open for editor if date passed
   useEffect(() => {
     if (!opened && role === "editor" && now >= unlockDate) {
       fetch("/.netlify/functions/openDoor", {
@@ -52,8 +52,8 @@ const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
   if (loading) {
     return (
       <PrivateRoute>
-        <main style={{ padding: "2rem", textAlign: "center" }}>
-          <h1>Loading...</h1>
+        <main className="main text-center">
+          <h1 className="title">⏳ Loading...</h1>
         </main>
       </PrivateRoute>
     )
@@ -62,9 +62,9 @@ const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
   if (role === "viewer" && !isOpen) {
     return (
       <PrivateRoute>
-        <main style={{ padding: "2rem", textAlign: "center" }}>
-          <h1>🔒 This door hasn’t been opened yet!</h1>
-          <p>Only M&Ms can open it after {date}</p>
+        <main className="main text-center">
+          <h1 className="title">🔒 This door hasn’t been opened yet!</h1>
+          <p className="text-muted">Only M&Ms can open it after <strong>{date}</strong>.</p>
         </main>
       </PrivateRoute>
     )
@@ -75,11 +75,18 @@ const MessageTemplate: React.FC<PageProps<MessageData>> = ({ data }) => {
 
   return (
     <PrivateRoute>
-      <main style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
+      <main className="main card single-message">
         <LoginMenu />
-        <h1>{title}</h1>
-        {gatsbyImage && <GatsbyImage image={gatsbyImage} alt={title} />}
-        <div dangerouslySetInnerHTML={{ __html: html }} />
+        <h1 className="title">{title}</h1>
+        {gatsbyImage && (
+          <div className="message-image">
+            <GatsbyImage image={gatsbyImage} alt={title} className="rounded" />
+          </div>
+        )}
+        <div
+          className="prose message-content"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
       </main>
     </PrivateRoute>
   )
