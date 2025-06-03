@@ -1,0 +1,136 @@
+.main {
+  padding: 2rem;
+  font-family: system-ui, sans-serif;
+}
+
+.title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  padding: 1rem;
+  background: #f0fff0;
+  text-align: center;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  border: 1px solid #cce5cc;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: #e0ffe0;
+  }
+}
+
+.locked {
+  opacity: 0.5;
+  background: #eee;
+  cursor: not-allowed;
+
+  &:hover {
+    transform: none;
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.main {
+  padding: 2rem;
+  font-family: system-ui, sans-serif;
+  max-width: 800px;
+  margin: auto;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.text-muted {
+  color: #666;
+}
+
+.message-image {
+  margin: 1rem 0;
+}
+
+.message-content {
+  line-height: 1.7;
+  color: #333;
+
+  a {
+    color: #007acc;
+    text-decoration: underline;
+  }
+}
+
+.button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #005fa3;
+  }
+}
+
+.login-container {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  text-align: right;
+  font-size: 0.9rem;
+  background-color: #f8f8f8;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-user {
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.login-button,
+.logout-button {
+  background-color: #007acc;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: #005fa3;
+  }
+}

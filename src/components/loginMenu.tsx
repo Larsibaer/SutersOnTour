@@ -1,6 +1,7 @@
 import React from "react"
 import netlifyIdentity from "netlify-identity-widget"
 import { useAuth } from "../hooks/useAuth"
+import "../styles/main.scss"
 
 const LoginMenu: React.FC = () => {
   const { user, loading } = useAuth()
@@ -9,26 +10,18 @@ const LoginMenu: React.FC = () => {
 
   if (!user) {
     return (
-      <button
-        onClick={() => netlifyIdentity.open("login")}
-        style={{ position: "fixed", top: 10, right: 10 }}
-      >
+      <button className="login-button" onClick={() => netlifyIdentity.open("login")}>
         Login
       </button>
     )
   }
 
   return (
-    <div style={{ position: "fixed", top: 10, right: 10, textAlign: "right" }}>
-      <div style={{ fontSize: "0.8rem" }}>
+    <div className="login-container">
+      <div className="login-user">
         👤 {user.email}
       </div>
-      <button
-        onClick={() => {
-          netlifyIdentity.logout()
-        }}
-        style={{ marginTop: "4px" }}
-      >
+      <button className="logout-button" onClick={() => netlifyIdentity.logout()}>
         Logout
       </button>
     </div>

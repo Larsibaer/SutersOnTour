@@ -3,6 +3,7 @@ import { graphql, PageProps, navigate, Link } from "gatsby"
 import { useAuth } from "../hooks/useAuth"
 import LoginMenu from "../components/loginMenu"
 import PrivateRoute from "../components/privateRoute"
+import "../styles/main.scss"
 
 type Message = {
   fields: { slug: string }
@@ -22,15 +23,15 @@ type IndexProps = PageProps<{
 
 const IndexPage: React.FC<IndexProps> = ({ data }) => {
   const messages = data.allMarkdownRemark.nodes
-  const { user, role, loading } = useAuth()
+  const { role, loading } = useAuth()
   const now = new Date()
 
   if (loading) {
     return (
       <PrivateRoute>
-        <main style={{ padding: "2rem" }}>
+        <main className="page">
           <LoginMenu />
-          <h1>Suters On Tour: Doors</h1>
+          <h1 className="title">Suters On Tour: Doors</h1>
           <p>Loading user...</p>
         </main>
       </PrivateRoute>
@@ -39,17 +40,10 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
 
   return (
     <PrivateRoute>
-      <main style={{ padding: "2rem" }}>
+      <main className="page">
         <LoginMenu />
-        <h1>Suters On Tour: Doors</h1>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            gap: "1rem",
-          }}
-        >
+        <h1 className="title">Suters On Tour: Doors</h1>
+        <div className="grid">
           {messages.map(({ fields, frontmatter }) => {
             const { slug } = fields
             const { title, week, date, opened } = frontmatter
@@ -57,50 +51,45 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
             const isEditor = role === "editor"
             const canOpen = isEditor && !opened && now >= unlockDate
             const visible = role === "admin" || opened || canOpen
+            const cardClass = `"card" ${!visible ? "locked" : ""}`
 
-            return (
-              <div
-                key={slug}
-                style={{
-                  padding: "1rem",
-                  background: visible ? "#e0ffe0" : "#ddd",
-                  textAlign: "center",
-                  borderRadius: "8px",
-                  opacity: visible ? 1 : 0.5,
-                }}
-              >
-                {canOpen ? (
-                  <div
-                    onClick={async () => {
-                      try {
-                        await fetch("/.netlify/functions/openDoor", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ week }),
-                        })
-                        navigate(slug)
-                      } catch {
-                        alert("❌ Failed to open door")
-                      }
-                    }}
-                    style={{
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                      color: "blue",
-                    }}
-                  >
+            if (canOpen) {
+              return (
+                <div
+                  key={slug}
+                  className={cardClass}
+                  onClick={async () => {
+                    try {
+                      await fetch("/.netlify/functions/openDoor", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ week }),
+                      })
+                      navigate(slug)
+                    } catch {
+                      alert("❌ Failed to open door")
+                    }
+                  }}
+                >
+                  <h3>{title}</h3>
+                </div>
+              )
+            }
+
+            if (visible) {
+              return (
+                <Link key={slug} to={slug} className="link">
+                  <div className={cardClass}>
                     <h3>{title}</h3>
                   </div>
-                ) : visible ? (
-                  <Link to={slug} style={{ textDecoration: "none" }}>
-                    <h3>{title}</h3>
-                  </Link>
-                ) : (
-                  <>
-                    <h3>{title}</h3>
-                    <p>🔒 Locked</p>
-                  </>
-                )}
+                </Link>
+              )
+            }
+
+            return (
+              <div key={slug} className={cardClass}>
+                <h3>{title}</h3>
+                <p>🔒 Locked</p>
               </div>
             )
           })}
