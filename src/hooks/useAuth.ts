@@ -7,6 +7,7 @@ type UserRole = "admin" | "editor" | "viewer" | "anonymous"
 export const useAuth = () => {
   const [user, setUser] = useState<netlifyIdentity.User | null>(null)
   const [role, setRole] = useState<UserRole>("anonymous")
+  const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -16,18 +17,21 @@ export const useAuth = () => {
     if (current) {
       setUser(current)
       setRole((current.app_metadata?.roles?.[0] as UserRole) || "anonymous")
+      setToken(current.token?.access_token || null)
       setLoading(false)
     }
 
     netlifyIdentity.on("init", (user) => {
       setUser(user)
       setRole((user?.app_metadata?.roles?.[0] as UserRole) || "anonymous")
+      setToken(user?.token?.access_token || null)
       setLoading(false)
     })
 
     netlifyIdentity.on("login", (user) => {
       setUser(user)
       setRole((user?.app_metadata?.roles?.[0] as UserRole) || "anonymous")
+      setToken(user?.token?.access_token || null)
       setLoading(false)
       netlifyIdentity.close()
       navigate("/")
@@ -36,6 +40,7 @@ export const useAuth = () => {
     netlifyIdentity.on("logout", () => {
       setUser(null)
       setRole("anonymous")
+      setToken(null)
       setLoading(false)
     })
 
@@ -46,5 +51,5 @@ export const useAuth = () => {
     }
   }, [])
 
-  return { user, role, loading }
+  return { user, role, token, loading }
 }
