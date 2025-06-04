@@ -4,7 +4,7 @@ import { Octokit } from "octokit"
 const handler: Handler = async (event, context) => {
   // ✅ Require Netlify Identity login
   const user = context.clientContext?.user
-  console.log("User context:", context.clientContext)
+
   if (!user) {
     return { statusCode: 401, body: "Not logged in" }
   }
