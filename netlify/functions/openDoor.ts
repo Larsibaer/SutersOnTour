@@ -1,20 +1,9 @@
 import { Handler } from "@netlify/functions"
 import { Octokit } from "octokit"
 
-const handler: Handler = async (event, context) => {
-  // ✅ Require Netlify Identity login
-  const user = context.clientContext?.user
-
-  if (!user) {
-    return { statusCode: 401, body: "Not logged in" }
-  }
-
-  // ✅ Check if user has editor or admin role
-  const roles = user.app_metadata?.roles || []
-  const allowed = roles.includes("editor") || roles.includes("admin")
-
-  if (!allowed) {
-    return { statusCode: 403, body: "Forbidden: Not an editor" }
+const handler: Handler = async (event) => {
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" }
   }
 
   const { week } = JSON.parse(event.body || "{}")
@@ -26,39 +15,35 @@ const handler: Handler = async (event, context) => {
 
   const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
 
-  try {
-    const { data: file } = await octokit.rest.repos.getContent({
-      owner,
-      repo,
-      path: filePath,
-    })
+  const { data: file } = await octokit.rest.repos.getContent({
+    owner,
+    repo,
+    path: filePath,
+  })
 
-    if (
-      Array.isArray(file) ||
-      file.type !== "file" ||
-      typeof file.content !== "string"
-    ) {
-      return { statusCode: 404, body: "File not found or is a directory" }
-    }
-    const content = Buffer.from(file.content, "base64").toString("utf-8")
-    const updated = content.replace(/opened:\s?false/, "opened: true")
-
-    await octokit.rest.repos.createOrUpdateFileContents({
-      owner,
-      repo,
-      path: filePath,
-      message: `🔓 Opened door for week ${week}`,
-      content: Buffer.from(updated).toString("base64"),
-      sha: file.sha,
-      committer: { name: "Door Bot", email: "bot@example.com" },
-      author: { name: "Door Bot", email: "bot@example.com" },
-    })
-
-    return { statusCode: 200, body: "Door opened" }
-  } catch (err) {
-    console.error(err)
-    return { statusCode: 500, body: "Failed to open door" }
+  if (Array.isArray(file) || !('content' in file) || typeof file.content !== "string") {
+    return { statusCode: 404, body: "File not found or invalid file type" }
   }
+
+  const content = Buffer.from(file.content, "base64").toString("utf-8")
+  if (/opened:\s*true/.test(content)) {
+    return { statusCode: 200, body: "Already open" }
+  }
+
+  const updated = content.replace(/opened:\s*false/, "opened: true")
+
+  await octokit.rest.repos.createOrUpdateFileContents({
+    owner,
+    repo,
+    path: filePath,
+    message: `🔓 Opened door for week ${week}`,
+    content: Buffer.from(updated).toString("base64"),
+    sha: file.sha,
+    committer: { name: "Door Bot", email: "bot@example.com" },
+    author: { name: "Door Bot", email: "bot@example.com" },
+  })
+
+  return { statusCode: 200, body: "Door opened" }
 }
 
 export { handler }
