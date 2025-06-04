@@ -5,7 +5,6 @@ const handler: Handler = async (event, context) => {
   // ✅ Require Netlify Identity login
   const user = context.clientContext?.user
   console.log("User context:", context.clientContext)
-  console.log(`User: ${user.email} (${user.user_id})`)
   if (!user) {
     return { statusCode: 401, body: "Not logged in" }
   }

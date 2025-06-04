@@ -52,7 +52,6 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
             const canOpen = isEditor && !opened && now >= unlockDate
             const visible = role === "admin" || opened || canOpen
             const cardClass = `"card" ${!visible ? "locked" : ""}`
-            const { token } = useAuth()
 
             if (canOpen) {
               return (
@@ -62,11 +61,10 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
                   onClick={async () => {
                     console.log(`Opening door for week ${week}`)
                     console.log(`Slug: ${slug}`)
-                    console.log(`Token: ${token}`)
                     try {
                       await fetch("/.netlify/functions/openDoor", {
                         method: "POST",
-                        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                        headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ week }),
                       })
                       navigate(slug)
