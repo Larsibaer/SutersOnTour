@@ -1,0 +1,148 @@
+import React from "react"
+import { Link, navigate } from "gatsby"
+import { StaticImage } from "gatsby-plugin-image"
+import "../styles/adventCalendar.scss"
+
+type Message = {
+  fields: { slug: string }
+  frontmatter: {
+    title: string
+    week: number
+    date: string
+    opened: boolean
+  }
+}
+
+type Props = {
+  role: string
+  messages: Message[]
+}
+
+const AdventCalendar: React.FC<Props> = ({ role, messages }) => {
+  const now = new Date()
+
+  return (
+    <div className="calendar" style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
+      <StaticImage
+        src="../../static/images/calendar-bg.jpg"
+        alt="Advent Calendar"
+        className="background"
+        layout="fullWidth"
+        placeholder="blurred"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+        }}
+        imgStyle={{
+          objectFit: "cover",
+          width: "100vw",
+          height: "100vh",
+        }}
+      />
+      <div style={{ position: "relative", width: "100%", height: "100%", zIndex: 1 }}>
+        {messages.map(({ fields, frontmatter }) => {
+          const { slug } = fields
+          const { title, week, date, opened } = frontmatter
+          const unlockDate = new Date(date)
+          const isEditor = role === "editor"
+          const canOpen = isEditor && !opened && now >= unlockDate
+          const visible = role === "admin" || opened || canOpen
+          let doorClass = "door"
+          if (canOpen) {
+            doorClass += " ready"
+          } else if (!visible) {
+            doorClass += " locked"
+          } else {
+            doorClass += " open"
+          }
+          
+
+          if (canOpen) {
+            return (
+              <div
+                key={slug}
+                className={doorClass}
+                style={generateRandomStyle()}
+                onClick={async () => {
+                  try {
+                    await fetch("/.netlify/functions/openDoor", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ week }),
+                    })
+                    navigate(slug)
+                  } catch {
+                    alert("Failed to open door")
+                  }
+                }}
+              >
+                {week}
+              </div>
+            )
+          }
+
+          if (visible) {
+            return (
+              <Link key={slug} to={slug} className={doorClass} style={generateRandomStyle()}>
+                {week}
+              </Link>
+            )
+          }
+
+          return (
+            <div key={slug} className={doorClass} style={generateRandomStyle()}>
+              {week}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+const placedDoors: Array<{ top: number; left: number; width: number; height: number }> = []
+function generateRandomStyle(): React.CSSProperties {
+  let attempts = 0
+  while (attempts < 100) {
+    const width = Math.random() * 60 + 40
+    const height = Math.random() * 60 + 40
+    const top = Math.random() * (100 - height / 10)
+    const left = Math.random() * (100 - width / 10)
+
+    const overlaps = placedDoors.some((door) => {
+      return !(
+        top + height / 10 < door.top ||
+        top > door.top + door.height / 10 ||
+        left + width / 10 < door.left ||
+        left > door.left + door.width / 10
+      )
+    })
+
+    if (!overlaps) {
+      placedDoors.push({ top, left, width, height })
+      return {
+        position: "absolute",
+        top: `${top}%`,
+        left: `${left}%`,
+        width: `${width}px`,
+        height: `${height}px`,
+      }
+    }
+
+    attempts++
+  }
+
+  // Fallback: allow overlap if we can't place it after 100 tries
+  return {
+    position: "absolute",
+    top: `${Math.random() * 90}%`,
+    left: `${Math.random() * 90}%`,
+    width: `${Math.random() * 60 + 40}px`,
+    height: `${Math.random() * 60 + 40}px`,
+  }
+}
+
+export default AdventCalendar

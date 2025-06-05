@@ -30,16 +30,6 @@
   }
 }
 
-.locked {
-  opacity: 0.5;
-  background: #eee;
-  cursor: not-allowed;
-
-  &:hover {
-    transform: none;
-  }
-}
-
 .link {
   text-decoration: none;
   color: inherit;
