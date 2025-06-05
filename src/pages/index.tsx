@@ -1,9 +1,9 @@
 import React from "react"
-import { graphql, PageProps, navigate, Link } from "gatsby"
+import { graphql, PageProps, navigate } from "gatsby"
 import { useAuth } from "../hooks/useAuth"
 import LoginMenu from "../components/loginMenu"
 import PrivateRoute from "../components/privateRoute"
-import "../styles/main.scss"
+import AdventCalendar from "../components/AdventCalendar"
 
 type Message = {
   fields: { slug: string }
@@ -22,80 +22,17 @@ type IndexProps = PageProps<{
 }>
 
 const IndexPage: React.FC<IndexProps> = ({ data }) => {
-  const messages = data.allMarkdownRemark.nodes
   const { role, loading } = useAuth()
-  const now = new Date()
+  const messages = data.allMarkdownRemark.nodes
 
-  if (loading) {
-    return (
-      <PrivateRoute>
-        <main className="page">
-          <LoginMenu />
-          <h1 className="title">Suters On Tour: Doors</h1>
-          <p>Loading user...</p>
-        </main>
-      </PrivateRoute>
-    )
-  }
+  // if (loading) return null
 
   return (
     <PrivateRoute>
-      <main className="page">
+      <main style={{ padding: "1rem", textAlign: "center" }}>
         <LoginMenu />
-        <h1 className="title">Suters On Tour: Doors</h1>
-        <div className="grid">
-          {messages.map(({ fields, frontmatter }) => {
-            const { slug } = fields
-            const { title, week, date, opened } = frontmatter
-            const unlockDate = new Date(date)
-            const isEditor = role === "editor"
-            const canOpen = isEditor && !opened && now >= unlockDate
-            const visible = role === "admin" || opened || canOpen
-            const cardClass = `"card" ${!visible ? "locked" : ""}`
-
-            if (canOpen) {
-              return (
-                <div
-                  key={slug}
-                  className={cardClass}
-                  onClick={async () => {
-                    console.log(`Opening door for week ${week}`)
-                    console.log(`Slug: ${slug}`)
-                    try {
-                      await fetch("/.netlify/functions/openDoor", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ week }),
-                      })
-                      navigate(slug)
-                    } catch {
-                      alert("❌ Failed to open door")
-                    }
-                  }}
-                >
-                  <h3>{title}</h3>
-                </div>
-              )
-            }
-
-            if (visible) {
-              return (
-                <Link key={slug} to={slug} className="link">
-                  <div className={cardClass}>
-                    <h3>{title}</h3>
-                  </div>
-                </Link>
-              )
-            }
-
-            return (
-              <div key={slug} className={cardClass}>
-                <h3>{title}</h3>
-                <p>🔒 Locked</p>
-              </div>
-            )
-          })}
-        </div>
+        <h1>Suters On Tour: Advent Calendar</h1>
+        <AdventCalendar role={role} messages={messages} />
       </main>
     </PrivateRoute>
   )

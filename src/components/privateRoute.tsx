@@ -41,13 +41,13 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }
   }, [])
 
-  if (loading) {
-    return (
-      <main className="main text-center">
-        <h1 className="title">⏳ Loading...</h1>
-      </main>
-    )
-  }
+  // if (loading) {
+  //   return (
+  //     <main className="main text-center">
+  //       <h1 className="title">⏳ Loading...</h1>
+  //     </main>
+  //   )
+  // }
 
   if (bypass) {
     return (
