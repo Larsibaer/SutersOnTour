@@ -1,9 +1,9 @@
 ---
-title: "Door 22"
+title: "Türchen 22"
 week: 22
 date: "2025-12-22T00:00:00.000Z"
 opened: false
-image: "/images/placeholder.jpg"
+image: "../images/placeholder.jpg"
 ---
 
-Write your story or message for door 22 here.
+Schreibe deinen Text für die Woche Nummer: 22 hier.

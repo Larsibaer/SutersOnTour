@@ -1,9 +1,9 @@
 ---
-title: "Door 10"
+title: "Türchen 10"
 week: 10
 date: "2025-12-10T00:00:00.000Z"
 opened: false
-image: "/images/placeholder.jpg"
+image: "../images/placeholder.jpg"
 ---
 
-Write your story or message for door 10 here.
+Schreibe deinen Text für die Woche Nummer: 10 hier.

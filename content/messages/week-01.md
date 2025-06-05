@@ -1,9 +1,9 @@
 ---
-title: Door 1
+title: "Türchen 1"
 week: 1
 date: 2025-12-01T00:00:00.000Z
 opened: false
-image: /images/calendar-bg.webp
+image: "../images/placeholder.jpg"
 ---
 
-Write your story or message for door 1 here.
+Schreibe deinen Text für die Woche Nummer: 1 hier.

@@ -18,14 +18,14 @@ for (let i = 1; i <= 30; i++) {
   date.setDate(startDate.getDate() + (i - 1));
 
   const frontmatter = `---
-title: "Door ${week}"
+title: "Türchen ${week}"
 week: ${week}
 date: "${date.toISOString()}"
 opened: false
-image: "/images/placeholder.jpg"
+image: "../images/placeholder.jpg"
 ---
 
-Write your story or message for door ${week} here.
+Schreibe deinen Text für die Woche Nummer: ${week} hier.
 `;
 
   fs.writeFileSync(filePath, frontmatter);
