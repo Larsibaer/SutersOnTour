@@ -22,7 +22,7 @@ title: "Türchen ${week}"
 week: ${week}
 date: "${date.toISOString()}"
 opened: false
-image: ./placeholder.jpg
+image: /images/placeholder.jpg
 ---
 
 Schreibe deinen Text für die Woche Nummer: ${week} hier.
