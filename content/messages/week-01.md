@@ -1,10 +1,9 @@
 ---
-opened: true
+title: "Door 1"
 week: 1
-title: Week 1
-date: '2025-05-01'
-name: Uncle Bob
-image: ./uncle-bob.png
+date: "2025-12-01T00:00:00.000Z"
+opened: false
+image: "/images/placeholder.jpg"
 ---
 
-Hi Micha and Rebby! Here’s a warm hug from home!
+Write your story or message for door 1 here.
