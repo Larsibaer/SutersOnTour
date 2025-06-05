@@ -1,9 +1,9 @@
 ---
-title: "Door 1"
+title: Door 1
 week: 1
-date: "2025-12-01T00:00:00.000Z"
+date: 2025-12-01T00:00:00.000Z
 opened: false
-image: "/images/placeholder.jpg"
+image: /images/calendar-bg.webp
 ---
 
 Write your story or message for door 1 here.
