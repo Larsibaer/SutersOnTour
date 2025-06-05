@@ -24,7 +24,7 @@ const AdventCalendar: React.FC<Props> = ({ role, messages }) => {
   return (
     <div className="calendar" style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
       <StaticImage
-        src="../../static/images/calendar-bg.jpg"
+        src="../../static/images/calendar-bg.webp"
         alt="Advent Calendar"
         className="background"
         layout="fullWidth"
@@ -103,21 +103,23 @@ const AdventCalendar: React.FC<Props> = ({ role, messages }) => {
     </div>
   )
 }
+
 const placedDoors: Array<{ top: number; left: number; width: number; height: number }> = []
+
 function generateRandomStyle(): React.CSSProperties {
   let attempts = 0
   while (attempts < 100) {
-    const width = Math.random() * 60 + 40
-    const height = Math.random() * 60 + 40
-    const top = Math.random() * (100 - height / 10)
-    const left = Math.random() * (100 - width / 10)
+    const width = Math.random() * 8 + 5 // in vw
+    const height = Math.random() * 8 + 5 // in vh
+    const top = Math.random() * (100 - height)
+    const left = Math.random() * (100 - width)
 
     const overlaps = placedDoors.some((door) => {
       return !(
-        top + height / 10 < door.top ||
-        top > door.top + door.height / 10 ||
-        left + width / 10 < door.left ||
-        left > door.left + door.width / 10
+        top + height < door.top ||
+        top > door.top + door.height ||
+        left + width < door.left ||
+        left > door.left + door.width
       )
     })
 
@@ -127,22 +129,22 @@ function generateRandomStyle(): React.CSSProperties {
         position: "absolute",
         top: `${top}%`,
         left: `${left}%`,
-        width: `${width}px`,
-        height: `${height}px`,
+        width: `${width}vw`,
+        height: `${height}vh`,
       }
     }
 
     attempts++
   }
 
-  // Fallback: allow overlap if we can't place it after 100 tries
   return {
     position: "absolute",
     top: `${Math.random() * 90}%`,
     left: `${Math.random() * 90}%`,
-    width: `${Math.random() * 60 + 40}px`,
-    height: `${Math.random() * 60 + 40}px`,
+    width: `8vw`,
+    height: `8vh`,
   }
 }
+
 
 export default AdventCalendar

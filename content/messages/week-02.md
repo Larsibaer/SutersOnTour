@@ -1,11 +1,9 @@
 ---
-title: Week 2
+title: "Door 2"
 week: 2
-date: 2025-06-01
-opened: true
-name: Uncle Bob
-image: ./uncle-bob2.jpg
+date: "2025-12-02T00:00:00.000Z"
+opened: false
+image: "/images/placeholder.jpg"
 ---
-TOP!
 
-T﻿est
+Write your story or message for door 2 here.

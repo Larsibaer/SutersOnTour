@@ -1,10 +1,9 @@
 ---
-opened: false
+title: "Door 3"
 week: 3
-title: Week 3
-date: '2025-07-01'
-name: Uncle Bob
-image: ./uncle-bob.png
+date: "2025-12-03T00:00:00.000Z"
+opened: false
+image: "/images/placeholder.jpg"
 ---
 
-Hi Micha and Rebby! Here’s a warm hug from home!
+Write your story or message for door 3 here.

@@ -14,7 +14,8 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "typecheck": "tsc --noEmit",
-    "open-door": "ts-node scripts/mark-door-open.ts"
+    "open-door": "ts-node scripts/mark-door-open.ts",
+    "generate:doors": "ts-node scripts/generate-doors.js"
   },
   "dependencies": {
     "@netlify/functions": "^3.1.9",
