@@ -24,7 +24,7 @@ const AdventCalendar: React.FC<Props> = ({ role, messages }) => {
   return (
     <div className="calendar" style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
       <StaticImage
-        src="../../static/images/calendar-bg.webp"
+        src="../../static/img/calendar-bg.webp"
         alt="Advent Calendar"
         className="background"
         layout="fullWidth"
