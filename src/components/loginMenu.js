@@ -1,7 +1,6 @@
 import React from "react";
 import netlifyIdentity from "netlify-identity-widget";
 import { useAuth } from "../hooks/useAuth";
-import "../style/main.sass";
 
 const LoginMenu = () => {
   const { user, loading } = useAuth();

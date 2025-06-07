@@ -1,13 +1,13 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
-import "../style/adventCalendar.sass"
 
 const AdventCalendar = ({ role, messages }) => {
   const now = new Date()
 
   return (
-    <div className="calendar" style={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
+    <div
+      className="calendar">
       <StaticImage
         src="../../static/img/calendar-bg.webp"
         alt="Advent Calendar"
@@ -18,17 +18,29 @@ const AdventCalendar = ({ role, messages }) => {
           position: "absolute",
           top: 0,
           left: 0,
-          width: "100vw",
-          height: "100vh",
+          width: "100%",
+          height: "100%",
           zIndex: 0,
+          objectFit: "cover",
+          boxSizing: "border-box",
         }}
         imgStyle={{
           objectFit: "cover",
-          width: "100vw",
-          height: "100vh",
+          width: "100%",
+          height: "100%",
+          boxSizing: "border-box",
         }}
       />
-      <div style={{ position: "relative", width: "100%", height: "100%", zIndex: 1 }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+          boxSizing: "border-box",
+          paddingRight: "env(safe-area-inset-right, 0px)",
+        }}
+      >
         {messages.map(({ fields, frontmatter }) => {
           const { slug } = fields
           const { title, week, date, opened } = frontmatter

@@ -1,5 +1,4 @@
-import "./src/style/bulma-style.sass";
-import "./src/style/custom-style.sass";
+import "./src/style/main.sass";
 
 export const onClientEntry = () => {
   if (!document.getElementById("netlify-identity-widget")) {

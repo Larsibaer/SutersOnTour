@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import netlifyIdentity from "netlify-identity-widget";
-import "../style/main.sass";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();

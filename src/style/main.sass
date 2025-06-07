@@ -1,33 +1,7 @@
-.main
-  padding: 2rem
-  font-family: system-ui, sans-serif
+@import "./variables"
+@import "~bulma"
+@import "./blog"
 
-.title
-  font-size: 2rem
-  text-align: center
-  margin-bottom: 1.5rem
-
-.grid
-  display: grid
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
-  gap: 1rem
-
-.card
-  padding: 1rem
-  background: #f0fff0
-  text-align: center
-  border-radius: 8px
-  transition: transform 0.2s ease
-  border: 1px solid #cce5cc
-  cursor: pointer
-
-  &:hover
-    transform: translateY(-2px)
-    background: #e0ffe0
-
-.link
-  text-decoration: none
-  color: inherit
 
 .main
   padding: 2rem
@@ -41,25 +15,9 @@
   margin-bottom: 1rem
   text-align: center
 
-.card
-  background: #fff
-  padding: 2rem
-  border-radius: 8px
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05)
-
-.text-muted
-  color: #666
-
-.message-image
-  margin: 1rem 0
-
-.message-content
-  line-height: 1.7
-  color: #333
-
-  a
-    color: #007acc
-    text-decoration: underline
+.link
+  text-decoration: none
+  color: inherit
 
 .button
   margin-top: 1rem
@@ -105,3 +63,67 @@
 
   &:hover
     background-color: #005fa3
+
+.calendar
+  position: relative
+  width: 100%
+  height: 100vh
+  overflow: hidden
+  box-sizing: border-box
+
+.backgroundWrapper
+  position: absolute
+  inset: 0
+  z-index: 1
+
+.background
+  width: 100%
+  height: 100%
+  object-fit: cover
+  object-position: center
+
+.doors
+  position: absolute
+  inset: 0
+  z-index: 2
+
+.door
+  position: absolute
+  display: flex
+  align-items: center
+  justify-content: center
+  border: 1px solid rgba(255, 215, 0)
+  text-align: center
+  font-weight: bold
+  font-size: 1.2rem
+  padding: 0.5rem
+  cursor: pointer
+  border-radius: 6px
+  transition: transform 0.2s ease
+  color: rgba(255, 215, 0)
+  text-decoration: none
+
+  &:hover
+    transform: scale(1.05)
+
+.open
+  background-color: rgba(255, 215, 0, 0.2)
+
+.locked
+  opacity: 0.5
+  background: #eee
+  cursor: not-allowed
+
+  &:hover
+    transform: none
+
+h1
+  font-size: 4rem
+  font-weight: bold
+  text-align: center
+  margin-bottom: 2rem
+
+  // Responsive scaling
+  @media screen and (max-width: 768px)
+    font-size: 2.2rem
+
