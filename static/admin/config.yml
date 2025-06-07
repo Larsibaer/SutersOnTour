@@ -4,6 +4,7 @@ backend:
 
 media_folder: "static/images"
 public_folder: "/images"
+site_url: "https://sutersontour.netlify.app"
 
 collections:
   - name: "doors"
@@ -12,6 +13,6 @@ collections:
     create: false
     slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string", hint: "Leave unchanged", readonly: true }
-      - { label: "Image", name: "image", widget: "image", hint: "Not editable", disabled: true }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: image}
       - { label: "Body", name: "body", widget: "markdown" }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "gatsby";
-import logo from "../img/sutersontour_text.png";
+import logo from "../img/sutersontour_logo_transparent.png";
 import github from "../img/social/github-icon.svg";
 
 const Footer = () => (

@@ -9,7 +9,7 @@ const AdventCalendar = ({ role, messages }) => {
     <div
       className="calendar">
       <StaticImage
-        src="../../static/img/calendar-bg.webp"
+        src="../../static/img/calendar-bg.png"
         alt="Advent Calendar"
         className="background"
         layout="fullWidth"

@@ -4,7 +4,7 @@ week: 1
 date: 2024-12-01
 opened: true
 slug: day-1
-image: /images/newplot.png
+image: /images/placeholder.png
 ---
 
 This is the content behind door 1!
