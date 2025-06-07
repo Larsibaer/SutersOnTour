@@ -1,9 +1,11 @@
 ---
-title: "Türchen 1"
-week: 1
-date: "2025-12-01T00:00:00.000Z"
-opened: false
-image: /images/placeholder.jpg
+week: 2
+title: Week 2
+date: 2025-05-01
+opened: true
+name: Uncle Bob
+image: ./placeholder.jpg
 ---
+Hi Micha and Rebby! Here’s a warm hug from home!
 
-Schreibe deinen Text für die Woche Nummer: 1 hier.
+Test
