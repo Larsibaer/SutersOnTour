@@ -8,7 +8,7 @@ public_folder: "/images"
 collections:
   - name: "doors"
     label: "Doors"
-    folder: "content/messages"
+    folder: "content/blog"
     create: false
     slug: "{{slug}}"
     fields:
