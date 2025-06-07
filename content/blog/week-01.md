@@ -1,10 +1,10 @@
 ---
-title: "Day 1: First Surprise"
+title: "KW: 29 - Türchen 1"
 week: 1
-date: 2024-12-01
-opened: true
-slug: day-1
-image: /images/placeholder.png
+date: "2025-07-14T00:00:00.000Z"
+opened: false
+slug: kw-29
+image: /images/placeholder.jpg
 ---
 
-This is the content behind door 1!
+Schreibe deinen Text für die Kalenderwoche: 29 hier.

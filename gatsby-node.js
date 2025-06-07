@@ -10,7 +10,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       createNodeField({
         node,
         name: "slug",
-        value: `/day-${week}`,
+        value: `/kw-${week}`,
       });
     }
   }

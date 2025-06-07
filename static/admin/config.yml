@@ -8,7 +8,7 @@ site_url: "https://sutersontour.netlify.app"
 
 collections:
   - name: "doors"
-    label: "Doors"
+    label: "Türchen"
     folder: "content/blog"
     create: false
     slug: "{{slug}}"
