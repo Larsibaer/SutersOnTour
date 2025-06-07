@@ -4,7 +4,7 @@ week: 8
 date: "2025-09-01T00:00:00.000Z"
 opened: false
 slug: kw-36
-image: /images/placeholder.jpg
+image: /images/placeholder.png
 ---
 
 Schreibe deinen Text für die Kalenderwoche: 36 hier.

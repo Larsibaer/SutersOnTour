@@ -36,7 +36,7 @@ week: ${week}
 date: "${date.toISOString()}"
 opened: false
 slug: kw-${weekNumber}
-image: /images/placeholder.jpg
+image: /images/placeholder.png
 ---
 
 Schreibe deinen Text für die Kalenderwoche: ${weekNumber} hier.
